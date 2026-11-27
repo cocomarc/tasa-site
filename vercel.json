@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/auth/discord", "destination": "/api/index?r=auth-discord" },
+    { "source": "/auth/roblox", "destination": "/api/index?r=auth-roblox" },
+    { "source": "/callback/discord", "destination": "/api/index?r=cb-discord" },
+    { "source": "/callback/roblox", "destination": "/api/index?r=cb-roblox" },
+    { "source": "/api/me", "destination": "/api/index?r=me" }
+  ]
+}
