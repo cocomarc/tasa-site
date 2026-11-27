@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>ETA · Account linking</title>
+<style>
+:root{--bg:#07070a;--fg:#fff;--muted:#8d8d99;--card:#111116;--line:#26262e;--accent:#a66cff;--tile:#261c3a;--blurple:#5865f2;box-sizing:border-box;color-scheme:dark;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#1a1228 0%,var(--bg) 60%);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{width:100%;max-width:440px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:32px 26px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.logo{width:72px;height:72px;margin:0 auto 22px;border-radius:20px;border:1px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:22px;letter-spacing:.12em;background:#0b0b10;box-shadow:0 0 40px rgba(166,108,255,.25)}
+.tag{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.22em;margin-bottom:12px}
+h1{font-size:32px;line-height:1.15;margin:0 0 12px;font-weight:800}
+.sub{color:var(--muted);margin:0 0 28px}
+.steps{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px}
+.st{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--muted);width:64px}
+.dot{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#16161c;display:grid;place-items:center;font-weight:700}
+.st.on{color:var(--fg);font-weight:600}
+.st.on .dot{border:2px solid var(--accent);box-shadow:0 0 0 5px var(--tile);color:var(--fg)}
+.st.ok .dot{background:var(--accent);border-color:var(--accent);color:#000}
+.bar{flex:1;height:1px;background:var(--line);margin-top:20px}
+.feat{list-style:none;padding:0;margin:0 0 28px;text-align:left}
+.feat li{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+.ic{flex:none;width:34px;height:34px;border-radius:10px;background:var(--tile);display:grid;place-items:center;color:var(--accent);font-size:15px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:16px;border:0;font:700 17px system-ui,sans-serif;cursor:pointer;color:#fff;background:var(--blurple);box-shadow:0 8px 30px rgba(88,101,242,.35)}
+.btn.rb{background:#fff;color:#000;box-shadow:0 8px 30px rgba(255,255,255,.12)}
+.btn:active{opacity:.85}
+.note{display:flex;gap:10px;align-items:center;justify-content:center;font-size:13px;color:var(--muted);margin:16px 0 0;text-align:left}
+.row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;text-align:left;background:#0d0d12}
+.av{position:relative;width:48px;height:48px;border-radius:50%;background:#1c1c24;display:grid;place-items:center;font-weight:700;overflow:hidden;flex:none}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lbl{font-size:12px;color:var(--muted)}
+.demo{margin-top:14px;text-align:center;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="app"></div>
+  <div class="demo" id="demo" hidden>Demo mode: real login works once the server is online.</div>
+</div>
+<script>
+var S={d:null,r:null,demo:false};
+var DISC='<svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M20.317 4.37a19.79 19.79 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.74 19.74 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.1 13.1 0 01-1.872-.892.077.077 0 01-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 01.078-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 01.079.009c.12.099.245.198.372.292a.077.077 0 01-.006.127 12.3 12.3 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.84 19.84 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>';
+var LOCK='<span aria-hidden="true">🔒</span>';
+function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function av(url,name){return "<div class='av'>"+esc((name||"?").charAt(0).toUpperCase())+(url?"<img src='"+esc(url)+"' alt='' onerror='this.remove()'>":"")+"</div>"}
+function row(label,u){return "<div class='row'>"+av(u.avatar,u.username)+"<div><div class='lbl'>"+label+"</div><b>"+esc(u.username)+"</b></div></div>"}
+function steps(n){
+  var names=["Discord","Roblox","Done"],h="<div class='steps'>";
+  for(var i=1;i<=3;i++){
+    var c=i<n?"ok":i===n?"on":"";
+    h+="<div class='st "+c+"'><div class='dot'>"+(i<n?"✓":i)+"</div>"+names[i-1]+"</div>"+(i<3?"<div class='bar'></div>":"");
+  }
+  return h+"</div>";
+}
+function render(){
+  var n=!S.d?1:!S.r?2:3,h="<div class='logo'>ETA</div><div class='tag'>ACCOUNT LINKING</div>";
+  if(n===1){
+    h+="<h1>Welcome to Touchline All-Star Association</h1><p class='sub'>Connect your Discord and Roblox accounts. It takes about 30 seconds.</p>"+steps(1)+
+    "<ul class='feat'><li><span class='ic'>★</span>Your Discord username and profile picture are saved</li><li><span class='ic'>✎</span>Your Roblox username and skin are linked to your profile</li><li><span class='ic'>⚽</span>Everything in one place, for the whole league</li></ul>"+
+    "<button class='btn' onclick=\"go('discord')\">"+DISC+"Continue with Discord</button><p class='note'>"+LOCK+"<span>You log in on Discord’s own site. We never see your password.</span></p>";
+  } else if(n===2){
+    h+="<h1>Discord connected</h1><p class='sub'>Last step: connect your Roblox account.</p>"+steps(2)+row("Discord",S.d)+
+    "<button class='btn rb' style='margin-top:18px' onclick=\"go('roblox')\">Continue with Roblox</button><p class='note'>"+LOCK+"<span>You log in on Roblox’s own site. We never see your password.</span></p>";
+  } else {
+    h+="<h1>You’re all set</h1><p class='sub'>Your ETA profile has been saved.</p>"+steps(3)+row("Discord",S.d)+row("Roblox",S.r)+
+    (S.r.skin?"<div class='row' style='justify-content:center'><img src='"+esc(S.r.skin)+"' alt='Roblox skin' style='max-height:220px' onerror='this.remove()'></div>":"");
+  }
+  document.getElementById("app").innerHTML=h;
+  document.getElementById("demo").hidden=!S.demo;
+}
+function go(p){
+  if(!S.demo){location.href="/auth/"+p;return}
+  if(p==="discord")S.d={username:"eta_player",avatar:""};else S.r={username:"RobloxPlayer",avatar:"",skin:""};
+  render();
+}
+fetch("/api/me").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){S.d=j.discord;S.r=j.roblox;render()}).catch(function(){S.demo=true;render()});
+render();
+</script>
+</body>
+</html>
