@@ -20,7 +20,7 @@ const setCookie = (res, name, val, maxAge) =>
 // ---- Base de données Supabase (API REST)
 const sb = (path, opt = {}) => fetch(`${E.SUPABASE_URL}/rest/v1/${path}`, {
   ...opt,
-  headers: { apikey: E.SUPABASE_SERVICE_KEY, Authorization: "Bearer " + E.SUPABASE_SERVICE_KEY, "Content-Type": "application/json", ...opt.headers },
+  headers: { apikey: E.SUPABASE_SERVICE_KEY, "Content-Type": "application/json", ...opt.headers },
 });
 
 const form = (o) => new URLSearchParams(o);
