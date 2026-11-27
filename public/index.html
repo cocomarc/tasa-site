@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>ETA · Account linking</title>
+<title>ATA · Account linking</title>
 <style>
 :root{--bg:#07070a;--fg:#fff;--muted:#8d8d99;--card:#111116;--line:#26262e;--accent:#a66cff;--tile:#261c3a;--blurple:#5865f2;box-sizing:border-box;color-scheme:dark;
 padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -59,7 +59,7 @@ function steps(n){
   return h+"</div>";
 }
 function render(){
-  var n=!S.d?1:!S.r?2:3,h="<div class='logo'>ETA</div><div class='tag'>ACCOUNT LINKING</div>";
+  var n=!S.d?1:!S.r?2:3,h="<div class='logo'>ATA</div><div class='tag'>ACCOUNT LINKING</div>";
   if(n===1){
     h+="<h1>Welcome to Touchline All-Star Association</h1><p class='sub'>Connect your Discord and Roblox accounts. It takes about 30 seconds.</p>"+steps(1)+
     "<ul class='feat'><li><span class='ic'>★</span>Your Discord username and profile picture are saved</li><li><span class='ic'>✎</span>Your Roblox username and skin are linked to your profile</li><li><span class='ic'>⚽</span>Everything in one place, for the whole league</li></ul>"+
@@ -68,7 +68,7 @@ function render(){
     h+="<h1>Discord connected</h1><p class='sub'>Last step: connect your Roblox account.</p>"+steps(2)+row("Discord",S.d)+
     "<button class='btn rb' style='margin-top:18px' onclick=\"go('roblox')\">Continue with Roblox</button><p class='note'>"+LOCK+"<span>You log in on Roblox’s own site. We never see your password.</span></p>";
   } else {
-    h+="<h1>You’re all set</h1><p class='sub'>Your ETA profile has been saved.</p>"+steps(3)+row("Discord",S.d)+row("Roblox",S.r)+
+    h+="<h1>You’re all set</h1><p class='sub'>Your ATA profile has been saved.</p>"+steps(3)+row("Discord",S.d)+row("Roblox",S.r)+
     (S.r.skin?"<div class='row' style='justify-content:center'><img src='"+esc(S.r.skin)+"' alt='Roblox skin' style='max-height:220px' onerror='this.remove()'></div>":"");
   }
   document.getElementById("app").innerHTML=h;
